@@ -4,20 +4,22 @@ import os
 import threading
 import time
 
-def desligar():
+# Função para iniciar o desligamento do PC após um tempo especificado
+def iniciar_desligamento():
     try:
-        tempo = int(entry.get())
-        tempo = tempo * 60
-        if tempo < 0:
+        tempo_minutos = int(tempo_entry.get())
+        tempo_segundos = tempo_minutos * 60
+        if tempo_segundos < 0:
             messagebox.showerror('Erro', 'Digite um número positivo')
             return
         else:
-            threading.Thread(target=desligar_pc, args=(tempo,)).start()
+            threading.Thread(target=desligar_pc, args=(tempo_segundos,)).start()
             messagebox.showinfo('Sucesso', 'Timer de desligamento iniciado com sucesso!')
     except ValueError:
         messagebox.showerror('Erro', 'Digite um número válido')
         return
 
+# Função para desligar o PC
 def desligar_pc(tempo):
     try:
         time.sleep(tempo)
@@ -25,17 +27,20 @@ def desligar_pc(tempo):
     except Exception as e:
         messagebox.showerror('Erro', f'Ocorreu um erro ao desligar o PC: {e}')
 
-window = tk.Tk()
-window.title('Desligar PC')
-window.geometry('250x150')
+# Criação da janela do aplicativo
+app_window = tk.Tk()
+app_window.title('Desligar PC')
+app_window.geometry('250x150')
 
-label = ttk.Label(window, text='Tempo para desligar (em minutos):')
-label.pack(pady=10)
+# Criação dos widgets
+tempo_label = ttk.Label(app_window, text='Tempo para desligar (em minutos):')
+tempo_label.pack(pady=10)
 
-entry = ttk.Entry(window, width=15, font=('Arial', 12), justify='center')
-entry.pack()
+tempo_entry = ttk.Entry(app_window, width=15, font=('Arial', 12), justify='center')
+tempo_entry.pack()
 
-button = ttk.Button(window, text='Desligar', command=desligar)
-button.pack(pady=10)
+desligar_button = ttk.Button(app_window, text='Desligar', command=iniciar_desligamento)
+desligar_button.pack(pady=10)
 
-window.mainloop()
+# Iniciar a aplicação
+app_window.mainloop()
